@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core">
+	
+<h:head>
+	<title>UberDist</title>
+	<h:outputStylesheet library="css" name="style.css" />
+</h:head>
+
+<h:body>
+	<h:form>
+	<div id="conteudo">
+	<h2>
+		<h:outputLabel value="Novo Usuário" rendered="#{usuarioBean.usuario.id==null}" />
+		<h:outputLabel value="Editar Usuário" rendered="#{usuarioBean.usuario.id!=null}" />	
+	</h2>
+		
+		<h:outputLabel value="Nome: " />
+		<h:inputText value="#{usuarioBean.usuario.nome}">
+			<f:ajax  event="change" />
+		</h:inputText>
+		
+		<h:outputLabel value="Login: " />
+		<h:inputText value="#{usuarioBean.usuario.login}">
+			<f:ajax  event="change" />
+		</h:inputText>
+		
+		<h:outputLabel value="Senha: " />
+		<h:inputSecret value="#{usuarioBean.usuario.senha}">
+			<f:ajax  event="change" />
+		</h:inputSecret>
+		
+		<h:commandButton value="Gravar Dados" action="#{usuarioBean.novoUsuario}">
+			<f:ajax execute="@form" render="@form" />
+		</h:commandButton>
+		
+	</div>
+
+	</h:form>
+</h:body>
+</html>

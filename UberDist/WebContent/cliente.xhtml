@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="/_template.xhtml">
+	<ui:define name="head">
+		<title>Cliente</title>
+	</ui:define>
+
+	<ui:define name="corpo">
+		<h:body>
+		<div id="conteudo">
+			<h:form>
+			<h2>Cliente</h2>
+			<h:messages styleClass="erros" />
+			<fieldset>
+				<legend>Dados do Cliente</legend>
+				
+				<h:outputLabel value="Nome: " />
+				<p:inputText value="#{clienteBean.cliente.nome}">
+					<f:ajax event="change" />
+					<f:validator validatorId="comecaComMaiuscula" />
+				</p:inputText>
+				
+				<h:outputLabel value="CNPJ: " />
+				<p:inputMask value="#{clienteBean.cliente.cnpj}" mask="99.999.999/9999-99" converterMessage="CNPJ inválido">
+					<f:converter converterId="cnpj" />
+					<f:ajax event="change" />
+				</p:inputMask>
+								
+				<h:commandButton value="Gravar" action="#{clienteBean.gravarDados}">
+					<f:ajax execute="@form" render="@form" />
+				</h:commandButton>
+				
+			</fieldset>
+			
+			<h2>Lista de Clientes</h2>
+			<p:dataTable value="#{clienteBean.clientes}" var="cliente" paginator="true" rows="5">
+				<p:column>
+					<f:facet name="header">Nome</f:facet>
+					#{cliente.nome}
+				</p:column>
+				
+				<p:column>
+					<f:facet name="header">Data de Cadastro</f:facet>
+					<h:outputText value="#{cliente.dataNascimento.time}">
+						<f:convertDateTime pattern="dd/MM/yyyy HH:mm" locale="pt_BR" timeZone="GMT-03:00" />
+					</h:outputText>
+				</p:column>
+			</p:dataTable>
+			</h:form>
+		</div>
+		</h:body>
+	</ui:define>
+</ui:composition>
+</html>

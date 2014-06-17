@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<ui:insert name="head" />
+	<title>UberDist</title>
+	<h:outputStylesheet library="css" name="style.css" />
+	<h:outputScript library="js" name="locale.js" />
+</h:head>
+
+<h:body>
+	<div id="cabecalho">
+		<h:graphicImage library="img" name="logo-uber.png" id="logoCompany" />
+	</div>
+	
+	<div id="usuarioLogado">
+		<h:outputText value="Logado Como: #{loginBean.usuario.login}" rendered="#{not empty loginBean.usuario.login}" />
+	</div>
+	
+		<h:form rendered="#{not empty loginBean.usuario.login}" id="conteudo">
+			<p:menubar>
+				<p:menuitem value="Cliente" action="cliente?faces-redirect=true" icon="ui-icon-person" />
+				<p:menuitem value="Produtos" action="produto?faces-redirect=true" icon="ui-icon-document" />
+				<p:submenu label="Nota Fiscal" action="notafiscal?faces-redirect=true" icon="ui-icon-document-b">
+					<p:menuitem value="Nova Nota Fiscal" action="notafiscal?faces-redirect=true" />
+					<p:menuitem value="Lista de Nota Fiscal" action="listanotas?faces-redirect=true" />
+				</p:submenu>
+				<p:menuitem value="Gráficos" action="grafico?faces-redirect=true" icon="ui-icon-print" />
+			</p:menubar>
+		</h:form>
+		
+	<ui:insert name="corpo" />
+	
+	<div id="rodape">&copy; Copyright 2014. Todos os Direitos Reservados a UberDist</div>
+</h:body>
+</html>

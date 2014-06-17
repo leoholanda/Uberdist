@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="/_template.xhtml">
+	<ui:define name="corpo">
+		<h:body>
+		<div id="conteudo">
+		<h:messages styleClass="erros" />
+		<h:form id="form">
+			<h2><h:outputText value="Notas Fiscais" rendered="#{notaFiscalBean.notaFiscal.id == null}" />
+				<h:outputText value="Itens da Nota: #{notaFiscalBean.notaFiscal.id}" rendered="#{notaFiscalBean.notaFiscal.id != null}" />
+			</h2>
+			
+			<p:dataTable value="#{notaFiscalBean.notasFiscais}" var="notaFiscal" paginator="true" rows="5" rendered="#{notaFiscalBean.notaFiscal.id == null}">
+				
+				<p:column headerText="Numero">
+					<h:outputLabel value="#{notaFiscal.id}" />
+				</p:column>
+				
+				<p:column headerText="CNPJ Cliente">
+					<h:outputLabel value="#{notaFiscal.cliente.cnpj}">
+						<f:converter converterId="cnpj" />
+					</h:outputLabel>
+				</p:column>
+				
+				<p:column style="text-align: center;">
+					<h:commandLink>
+						<h:outputText styleClass="ui-icon ui-icon-circle-check" title="Detalhar" />
+							<f:setPropertyActionListener value="#{notaFiscal}" target="#{notaFiscalBean.notaFiscal}" />
+					</h:commandLink>
+				</p:column>
+				
+			</p:dataTable>
+			</h:form>
+			
+			<h:form id="formItem" rendered="#{notaFiscalBean.notaFiscal.id != null}">
+			
+			<fieldset>
+				<legend>Dados do Item</legend>
+				
+				<h:outputLabel value="Produto: " />
+				<h:selectOneMenu value="#{notaFiscalBean.idProduto}">
+					<f:selectItems value="#{produtoBean.produtos}" var="produto" itemValue="#{produto.id}" itemLabel="#{produto.nome}" />
+					<f:ajax event="change" />
+				</h:selectOneMenu>
+				
+				<h:outputLabel value="Quantidade: " />
+				<h:inputText value="#{notaFiscalBean.item.quantidade}">
+					<f:ajax event="change" />
+				</h:inputText>
+								
+				<h:commandButton action="#{notaFiscalBean.addItemNotaFiscalExistente}" value="Adicionar Novo Item">
+					<f:ajax execute="@all" render="@all" />
+				</h:commandButton>
+					
+			</fieldset>
+			
+			<p:dataTable id="tabela" value="#{notaFiscalBean.itensDaNotaFiscal}" var="item" rendered="#{notaFiscalBean.notaFiscal.id != null}">
+				
+				<p:column headerText="Produto">
+					<h:outputLabel value="#{item.produto.nome}" />
+				</p:column>
+				
+				<p:column headerText="Descrição">
+					<h:outputLabel value="#{item.produto.descricao}" />
+				</p:column>
+				
+				<p:column headerText="Preço">
+					<h:outputLabel value="#{item.produto.preco}">
+						<f:convertNumber pattern="0.00" />
+					</h:outputLabel>
+				</p:column>
+				
+				<p:column headerText="Quantidade">
+					<h:outputLabel value="#{item.quantidade}" />
+				</p:column>
+				
+				<p:column>
+					<h:commandLink action="#{notaFiscalBean.removeItemDaNota}" 
+						title="Remover Produto" id="btnRemove">
+						<h:graphicImage library="img" name="dt_remove.png" />
+							<f:ajax render="@all" execute="@this" />
+							<f:setPropertyActionListener value="#{item}" target="#{notaFiscalBean.item}" />
+					</h:commandLink>
+				</p:column>
+				
+			</p:dataTable>
+			
+			<div align="center">
+			<h:commandButton value="Atualizar Nota Fiscal" actionListener="#{notaFiscalBean.atualizarNotaFiscal}">
+				<f:ajax execute="@all" render="@all" />
+			</h:commandButton>
+			</div>
+			
+		</h:form>	
+		</div>
+		</h:body>
+	</ui:define>
+</ui:composition>
+
+</html>

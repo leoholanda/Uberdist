@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:caelum="http://java.sun.com/jsf/composite/caelum"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="/_template.xhtml">
+<ui:define name="head">
+	<title>Adicione os Produtos da UberDist</title>
+</ui:define>
+<ui:define name="corpo">
+
+		<h:body>
+			<div id="conteudo">
+				<h:form>
+					<h2>
+						<h:outputText value="Novo Produto"
+							rendered="#{produtoBean.produto.id==null}" />
+						<h:outputText value="Editar Produto"
+							rendered="#{produtoBean.produto.id!=null}" />
+					</h2>
+					<h:messages id="msgs" styleClass="erros" />
+					<fieldset>
+						<legend>Dados do Produto</legend>
+						<caelum:campoTexto id="nome" label="Nome: " value="#{produtoBean.produto.nome}" />	
+
+						<h:outputLabel value="Descrição: " for="descricao" />
+						<h:inputTextarea id="descricao" required="true" requiredMessage="Campo descrição requerido"
+							value="#{produtoBean.produto.descricao}" validatorMessage="Mínimo 100 caracteres">
+							<f:ajax event="change" />
+							<f:validateLength maximum="100" />
+						</h:inputTextarea>
+
+						<h:outputLabel value="Preço" for="preco" />
+						<h:inputText id="preco" value="#{produtoBean.produto.preco}" required="true" requiredMessage="Preço obrigatório"
+						validatorMessage="O valor mínimo do preço é 0,50">
+							<f:ajax event="change" />
+							<f:convertNumber pattern="0.00" />
+							<f:validateDoubleRange minimum="0.50" />
+						</h:inputText>
+						
+						<h:outputLabel value="Quantidade" />
+						<h:inputText id="quantidade" value="#{produtoBean.produto.quantidade}">
+							<f:ajax event="change" />
+						</h:inputText>
+						
+						<caelum:ajaxButton value="Gravar Dados" action="#{produtoBean.gravarDados}" />
+
+						<h:commandButton action="produto?faces-redirect=true"
+							value="Cancelar" rendered="#{produtoBean.produto.id!=null}" />
+					</fieldset>
+
+					<h2>Listagem de Produtos</h2>
+					<h:dataTable value="#{produtoBean.produtos}" var="produto"
+						id="tabela" styleClass="dados" rowClasses="impar, par">
+						<h:column>
+							<f:facet name="header">Nome</f:facet>
+							<f:facet name="footer">TOTAL</f:facet>
+								#{produto.nome}
+						</h:column>
+
+						<h:column>
+							<f:facet name="header">Descrição</f:facet>
+								#{produto.descricao}
+						</h:column>
+						
+						<h:column>
+							<f:facet name="header">Estoque</f:facet>
+							<f:facet name="footer">#{produtoBean.totalQuantidade}</f:facet>
+								#{produto.quantidade}
+						</h:column>
+
+						<h:column>
+							<f:facet name="header">Preço</f:facet>
+							<f:facet name="footer">
+							<h:outputText value="#{produtoBean.total}">
+								<f:convertNumber type="currency" currencySymbol="R$" locale="pt_BR" />
+							</h:outputText>
+							</f:facet>
+							<h:outputText value="#{produto.preco}">
+								<f:convertNumber type="currency" currencySymbol="R$" locale="pt_BR" />
+							</h:outputText>
+						</h:column>
+
+						<h:column>
+							<h:commandLink actionListener="#{produtoBean.remove(produto)}"
+								title="Remover Produto" id="btnRemove" onclick="if (!confirm('Deseja realmente excluir o produto #{produto.nome}')) return false;">
+								<h:graphicImage library="img" name="dt_remove.png" />
+									<f:ajax render="@form" execute="@this" />
+							</h:commandLink>
+						</h:column>
+
+						<h:column>
+							<h:commandLink title="Alterar Produto">
+								<f:setPropertyActionListener value="#{produto}"
+									target="#{produtoBean.produto}" />
+								<h:graphicImage library="img" name="dt_edit.png" />
+								<f:ajax render="@form" />
+							</h:commandLink>
+						</h:column>
+					</h:dataTable>
+				</h:form>
+			</div>
+
+		</h:body>
+	</ui:define>
+</ui:composition>
+</html>
