@@ -16,7 +16,7 @@
 			<property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver" />
 			<property name="hibernate.connection.url" value="jdbc:mysql://localhost/uberdist" />
 			<property name="hibernate.connection.username" value="root" />
-			<property name="hibernate.connection.password" value="leo123" />
+			<property name="hibernate.connection.password" value="root" />
 			<property name="hibernate.hbm2ddl.auto" value="update" />
 			<property name="hibernate.dialect" value="org.hibernate.dialect.MySQLDialect"/>
 			
