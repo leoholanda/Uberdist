@@ -1,5 +1,5 @@
-# Uberdist
+# Uberdist - 2011
 
-Distribuidora de Uberlândia
+Curso FJ-22 Caelum
 
-Curso FJ-22 Caelum 2011
+Projeto constuído com JSF 2, JPA, Hibernate e Primefaces
